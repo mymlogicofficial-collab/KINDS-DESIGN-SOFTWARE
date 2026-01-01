@@ -1,3 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K.I.D.S. - Imaginative Design Shack</title>
+    <style>
+        /* --- BASE STYLES (The Foundation) --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace; /* Blueprint style */
+            height: 100%;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        /* --- THE DOOR (Landing State) --- */
+        #entry-door {
+            text-align: center;
+            background: #fff;
+            padding: 40px;
+            border: 4px solid #333;
+            box-shadow: 10px 10px 0px #333;
+            max-width: 500px;
+            width: 90%;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            position: absolute; /* Keeps it centered */
+            z-index: 10;
+        }
+
+        .mascot-placeholder {
+            width: 120px;
+            height: 120px;
+            background-color: #ddd;
+            border-radius: 50%;
+            border: 3px dashed #333;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        h1.shack-sign {
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            border-bottom: 4px solid #333;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        p.question {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        button#yes-btn {
+            margin-top: 30px;
+            background-color: #FFD700; /* Gold */
+            color: #000;
+            border: 3px solid #000;
+            font-size: 2rem;
+            padding: 15px 40px;
+            cursor: pointer;
+            font-weight: 900;
+            box-shadow: 5px 5px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        button#yes-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0px #000;
+        }
+
+        /* --- THE INTERIOR (Hidden Content) --- */
+        #the-shack-interior {
+            display: none; /* Hidden until YES is clicked */
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            height: 100%;
+            overflow-y: auto; /* Allows scrolling if text is long */
+            box-sizing: border-box;
+            animation: fadeIn 1s;
+        }
+
+        .interior-container {
+            background: #fff;
+            border: 2px solid #333;
+            padding: 30px;
+            box-shadow: 8px 8px 0px #ccc;
+        }
+
+        .product-header {
+            text-align: center;
+            border-bottom: 2px dashed #333;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .price-box {
+            background-color: #000;
+            color: #FFD700;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            border: 2px solid #FFD700;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .legal-footer {
+            margin-top: 30px;
+            font-size: 0.7rem;
+            color: #666;
+            text-align: center;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        .contact-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="entry-door">
+        <div class="mascot-placeholder">
+            [Ab Graphic Here]
+        </div>
+        <h1 class="shack-sign">K.I.D.S.</h1>
+        <p class="question">For Creative Kids.<br>Are you a Creative Kid?</p>
+        <button id="yes-btn" onclick="enterShack()">YES!</button>
+    </div>
+
+    <div id="the-shack-interior">
+        <div class="interior-container">
+            <div class="product-header">
+                <h2>THE IMAGINATION CREATION STATION</h2>
+                <p>K.I.D.S. - Inventive Design Shack</p>
+            </div>
+
+            <p><strong>Don't wanna SUBSCRIBE?</strong> The Digital Coloring book is for sale individually and far separated from any commitment.</p>
+
+            <div class="price-box">
+                DIGITAL DONATION: <br>
+                $19.99 + Tax (Where applicable)
+            </div>
+
+            <h3>THE SPECS:</h3>
+            <ul class="features">
+                <li>✅ Simplistic and child-friendly to use.</li>
+                <li>✅ Light video/audio/image editor.</li>
+                <li>✅ <strong>NO</strong> Commercials. <strong>NO</strong> Call to buy.</li>
+                <li>✅ <strong>NO DIRECT INTERNET ACCESS.</strong></li>
+                <li>✅ Includes 2 coloring packs to start (SE CUSTOMS Style).</li>
+                <li>✅ Fully customizable to your child's age.</li>
+            </ul>
+
+            <p><em>"Get it ahead of the rest and take a peek at the work we're doing over in GitHub."</em></p>
+            
+            <a href="mailto:mymlogic@gmail.com" class="contact-link">QUESTIONS? mymlogic@gmail.com</a>
+            <p class="contact-link">github.com/mymlogic</p>
+
+            <div class="legal-footer">
+                All images, slogans, logos shown or implied are trademarks of SE CUSTOMS, CC of MYM LOGIC LLC. 2025.
+                <br>
+                Be the i in WE-i!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function enterShack() {
+            const door = document.getElementById('entry-door');
+            const interior = document.getElementById('the-shack-interior');
+
+            // 1. Animate the door opening/disappearing
+            door.style.transform = "scale(1.1)";
+            door.style.opacity = "0";
+
+            // 2. Wait 0.5s, then hide door and show interior
+            setTimeout(() => {
+                door.style.display = 'none';
+                interior.style.display = 'flex'; // Use flex to center the content
+            }, 500);
+        }
+    </script>
+</body>
+</html>
 <html lang="en"><!DOCTYPE html>
 <html lang="en">
 <head>
