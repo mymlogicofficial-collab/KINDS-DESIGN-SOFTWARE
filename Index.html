@@ -1,3 +1,310 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewporthead>
+    <meta charset="UTF-8">
+    <meta name="viewport"<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K.I.D.S. - The Shack</title>
+    <style>
+        /* BASE STYLES */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace; /* Monospace fits the "Blueprint/Shack" vibe */
+            height: 100%;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* THE DOOR (Landing State) */
+        #entry-door {
+            text-align: center;
+            background: #fff;
+            padding: 40px;
+            border: 4px solid #333;
+            box-shadow: 10px 10px 0px #333; /* Hard shadow for a "sketchy" feel */
+            max-width: 500px;
+            width: 90%;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        /* THE MASCOT (Ab) */
+        .mascot-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px auto;
+            background-color: #ddd; /* Placeholder color until image is loaded */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #333;
+        }
+
+        .mascot-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        /* THE SIGN */
+        h1.shack-sign {
+            font-size: 3rem;
+            margin: 0;
+            color: #333;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            border-bottom: 4px solid #333;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        /* THE TAGLINE */
+        p.question {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        /* THE BUTTON */
+        button#yes-btn {
+            margin-top: 30px;
+            background-color: #FFD700; /* Bright Yellow */
+            color: #000;
+            border: 3px solid #000;
+            font-size: 2rem;
+            padding: 15px 40px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 900;
+            box-shadow: 5px 5px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        button#yes-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0px #000;
+            background-color: #ffeb3b;
+        }
+
+        button#yes-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #000;
+        }
+
+        /* THE SHACK (Hidden Content) */
+        #the-shack-interior {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s;
+        }
+
+        h2 { font-size: 2.5rem; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="entry-door">
+        <div class="mascot-container">
+            <span>(Ab is Here)</span> 
+        </div>
+
+        <h1 class="shack-sign">K.I.D.S.</h1>
+        <p class="question">For Creative Kids.<br><br>Are you a Creative Kid?</p>
+        
+        <button id="yes-btn" onclick="enterShack()">YES!</button>
+    </div>
+
+    <div id="the-shack-interior">
+        <h2>Welcome to the Shack!</h2>
+        <p>You made it inside. Now let's make a mess.</p>
+    </div>
+
+    <script>
+        function enterShack() {
+            const door = document.getElementById('entry-door');
+            const shack = document.getElementById('the-shack-interior');
+
+            // Animation to slide the door away
+            door.style.transform = "scale(1.1)";
+            door.style.opacity = "0";
+
+            setTimeout(() => {
+                door.style.display = 'none';
+                shack.style.display = 'block';
+            }, 500); // Wait 0.5 seconds for animation to finish
+        }
+    </script>
+</body>
+</html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewporthead>
+    <meta charset="UTF-8">
+    <meta name="viewport"<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K.I.D.S. - The Shack</title>
+    <style>
+        /* BASE STYLES */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace; /* Monospace fits the "Blueprint/Shack" vibe */
+            height: 100%;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* THE DOOR (Landing State) */
+        #entry-door {
+            text-align: center;
+            background: #fff;
+            padding: 40px;
+            border: 4px solid #333;
+            box-shadow: 10px 10px 0px #333; /* Hard shadow for a "sketchy" feel */
+            max-width: 500px;
+            width: 90%;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        /* THE MASCOT (Ab) */
+        .mascot-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px auto;
+            background-color: #ddd; /* Placeholder color until image is loaded */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #333;
+        }
+
+        .mascot-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        /* THE SIGN */
+        h1.shack-sign {
+            font-size: 3rem;
+            margin: 0;
+            color: #333;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            border-bottom: 4px solid #333;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        /* THE TAGLINE */
+        p.question {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        /* THE BUTTON */
+        button#yes-btn {
+            margin-top: 30px;
+            background-color: #FFD700; /* Bright Yellow */
+            color: #000;
+            border: 3px solid #000;
+            font-size: 2rem;
+            padding: 15px 40px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 900;
+            box-shadow: 5px 5px 0px #000;
+            transition: all 0.2s ease;
+        }
+
+        button#yes-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0px #000;
+            background-color: #ffeb3b;
+        }
+
+        button#yes-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #000;
+        }
+
+        /* THE SHACK (Hidden Content) */
+        #the-shack-interior {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s;
+        }
+
+        h2 { font-size: 2.5rem; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="entry-door">
+        <div class="mascot-container">
+            <span>(Ab is Here)</span> 
+        </div>
+
+        <h1 class="shack-sign">K.I.D.S.</h1>
+        <p class="question">For Creative Kids.<br><br>Are you a Creative Kid?</p>
+        
+        <button id="yes-btn" onclick="enterShack()">YES!</button>
+    </div>
+
+    <div id="the-shack-interior">
+        <h2>Welcome to the Shack!</h2>
+        <p>You made it inside. Now let's make a mess.</p>
+    </div>
+
+    <script>
+        function enterShack() {
+            const door = document.getElementById('entry-door');
+            const shack = document.getElementById('the-shack-interior');
+
+            // Animation to slide the door away
+            door.style.transform = "scale(1.1)";
+            door.style.opacity = "0";
+
+            setTimeout(() => {
+                door.style.display = 'none';
+                shack.style.display = 'block';
+            }, 500); // Wait 0.5 seconds for animation to finish
+        }
+    </script>
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
