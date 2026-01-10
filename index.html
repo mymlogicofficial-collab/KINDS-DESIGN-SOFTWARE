@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K.I.D.S. - The Shack</title>
+    <title>K.I.D.S. - Intellectual Development Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     
     <style>
@@ -19,6 +19,21 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .screen.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #entry-door {
@@ -50,6 +65,13 @@
             text-shadow: 3px 3px 0px #000;
         }
 
+        h2 {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 2rem;
+            color: #FFD700;
+            text-shadow: 2px 2px 0px #000;
+        }
+
         p {
             font-size: 1.2rem;
             margin-top: 20px;
@@ -66,19 +88,459 @@
             padding: 15px 50px;
             cursor: pointer;
             box-shadow: 5px 5px 0px #000;
+            transition: transform 0.1s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Age Verification Screen */
+        #age-screen {
+            flex-direction: column;
+        }
+
+        .age-input {
+            font-size: 2rem;
+            padding: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 3px solid #FFD700;
+            background: #2b2b2b;
+            color: #fff;
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        /* Main App Interface - Grid System */
+        #main-app {
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            position: relative;
+        }
+
+        /* Coordinate Grid System - 100x200 grid */
+        .button-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(100, 1fr);
+            grid-template-rows: repeat(200, 1fr);
+        }
+
+        /* Individual Grid Button */
+        .grid-button {
+            position: absolute;
+            background: #FFD700;
+            border: 2px solid #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Permanent Marker', cursive;
+            color: #000;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .grid-button:hover {
+            background: #FFA500;
+            z-index: 10;
+        }
+
+        /* Abb Assistant */
+        .abb-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #FFD700;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .abb-message {
+            position: fixed;
+            bottom: 130px;
+            right: 20px;
+            background: #2b2b2b;
+            border: 3px solid #FFD700;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 300px;
+            font-family: 'Courier New', monospace;
+            display: none;
+            z-index: 999;
+        }
+
+        .abb-message.active {
+            display: block;
+        }
+
+        /* Coloring Book Mode for Young Users */
+        .coloring-mode {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .coloring-mode.active {
+            display: flex;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .color-button {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #000;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .coloring-canvas {
+            width: 80%;
+            max-width: 600px;
+            height: 400px;
+            background: white;
+            border: 5px solid #FFD700;
+            cursor: crosshair;
+        }
+
+        /* Advanced Mode for Older Users */
+        .advanced-mode {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .advanced-mode.active {
+            display: flex;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .feature-card {
+            background: #2b2b2b;
+            border: 3px solid #FFD700;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
 
-    <div id="entry-door">
-        <img src="ab.jpg" alt="Ab" class="mascot-img">
-        
-        <h1>K.I.D.S.</h1>
-        <p>For Creative Kids.<br>Are you a Creative Kid?</p>
-        
-        <button onclick="alert('Welcome to the Shack!')">YES!</button>
+    <!-- Entry Screen -->
+    <div id="welcome-screen" class="screen active">
+        <div id="entry-door">
+            <img src="abb.jpg" alt="Abb" class="mascot-img">
+            
+            <h1>K.I.D.S.</h1>
+            <p>For Creative Kids.<br>Are you a Creative Kid?</p>
+            
+            <button onclick="startApp()">YES!</button>
+        </div>
     </div>
+
+    <!-- Age Verification Screen -->
+    <div id="age-screen" class="screen">
+        <div id="entry-door">
+            <img src="abb.jpg" alt="Abb" class="mascot-img">
+            
+            <h2>Hi! I'm Abb!</h2>
+            <p>How old are you?</p>
+            
+            <input type="number" class="age-input" id="age-input" min="1" max="99" placeholder="?">
+            
+            <button onclick="validateAge()">Let's Go!</button>
+        </div>
+    </div>
+
+    <!-- Main App Interface -->
+    <div id="main-app" class="screen">
+        <!-- Coloring Mode for Young Kids (3-5) -->
+        <div id="coloring-mode" class="coloring-mode">
+            <h2>Let's Color!</h2>
+            <div class="color-palette" id="color-palette">
+                <!-- Simple palette for young kids -->
+                <div class="color-button" style="background: #FF0000;" onclick="selectColor('#FF0000')"></div>
+                <div class="color-button" style="background: #00FF00;" onclick="selectColor('#00FF00')"></div>
+                <div class="color-button" style="background: #0000FF;" onclick="selectColor('#0000FF')"></div>
+                <div class="color-button" style="background: #FFFF00;" onclick="selectColor('#FFFF00')"></div>
+                <div class="color-button" style="background: #FF00FF;" onclick="selectColor('#FF00FF')"></div>
+            </div>
+            <canvas id="coloring-canvas" class="coloring-canvas"></canvas>
+            <p>Abb is here to help! Click Abb if you need assistance.</p>
+        </div>
+
+        <!-- Advanced Mode for Older Kids (6+) -->
+        <div id="advanced-mode" class="advanced-mode">
+            <h2 style="text-align: center; padding: 20px;">Choose Your Activity</h2>
+            <div class="feature-grid">
+                <div class="feature-card" onclick="placeGridButton(10, 20, 'Design')">
+                    <h3>Design Studio</h3>
+                    <p>Create your own designs</p>
+                </div>
+                <div class="feature-card" onclick="placeGridButton(30, 40, 'Color')">
+                    <h3>Coloring Book</h3>
+                    <p>Advanced coloring pages</p>
+                </div>
+                <div class="feature-card" onclick="placeGridButton(50, 60, 'Edit')">
+                    <h3>Audio/Video</h3>
+                    <p>Edit your creations</p>
+                </div>
+                <div class="feature-card" onclick="placeGridButton(70, 80, 'Sticker')">
+                    <h3>Sticker Factory</h3>
+                    <p>Create custom stickers</p>
+                </div>
+                <div class="feature-card" onclick="placeGridButton(90, 100, 'Learn')">
+                    <h3>AbbCademics™</h3>
+                    <p>Learning assistance</p>
+                </div>
+                <div class="feature-card" onclick="playSound('fart')">
+                    <h3>Fun Sounds</h3>
+                    <p>Interactive sounds</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abb Assistant (always visible in main app) -->
+        <img src="abb.jpg" alt="Abb Assistant" class="abb-assistant" onclick="toggleAbbMessage()">
+        <div id="abb-message" class="abb-message">
+            <p id="abb-text">Hi! I'm Abb, your assistant! Click me anytime you need help!</p>
+        </div>
+    </div>
+
+    <script>
+        // K.I.D.S. App State Management
+        const KIDSApp = {
+            userAge: 0,
+            mode: 'WE-mode', // Default safe mode
+            failedAttempts: 0,
+            currentColor: '#FF0000',
+            
+            // Coordinate System - Maps grid positions to actions
+            // Grid: 100 columns (x: -50 to 50), 200 rows (y: -100 to 100)
+            gridActions: new Map(),
+            
+            // Age-based feature availability
+            getAvailableFeatures: function(age) {
+                if (age <= 5) {
+                    return ['coloring-simple', 'sounds-basic', 'abb-assist'];
+                } else if (age <= 10) {
+                    return ['coloring-advanced', 'design-basic', 'sounds-all', 'abb-reads'];
+                } else {
+                    return ['all-features'];
+                }
+            }
+        };
+
+        function startApp() {
+            switchScreen('welcome-screen', 'age-screen');
+        }
+
+        function validateAge() {
+            const ageInput = document.getElementById('age-input');
+            const age = parseInt(ageInput.value);
+            
+            if (isNaN(age) || age < 1 || age > 99) {
+                showAbbMessage("Hmm, that doesn't look right. Can you try again?");
+                return;
+            }
+            
+            KIDSApp.userAge = age;
+            
+            // Age validation with incognito security question
+            setTimeout(() => {
+                const verified = securityCheck(age);
+                if (verified) {
+                    loadAppMode(age);
+                } else {
+                    KIDSApp.failedAttempts++;
+                    if (KIDSApp.failedAttempts >= 3) {
+                        // Force coloring book mode after repeated attempts
+                        showAbbMessage("Let's do some coloring instead!");
+                        loadColoringMode(true);
+                    } else {
+                        showAbbMessage("Let me ask you something else...");
+                        setTimeout(() => validateAge(), 2000);
+                    }
+                }
+            }, 1000);
+        }
+
+        function securityCheck(age) {
+            // Incognito security validation
+            // In real implementation, this would ask age-appropriate questions
+            // For demo, we'll accept the age
+            return true;
+        }
+
+        function loadAppMode(age) {
+            switchScreen('age-screen', 'main-app');
+            
+            if (age <= 5) {
+                // Young kids: Simple coloring mode with Abb assistance
+                loadColoringMode(false);
+                showAbbMessage("Let's color together! I'll help you!");
+            } else if (age <= 10) {
+                // Older kids: More features available
+                loadAdvancedMode(true);
+                showAbbMessage("Welcome! You have lots of cool things to try!");
+            } else {
+                // Teens: Full feature set
+                loadAdvancedMode(false);
+                showAbbMessage("Welcome to K.I.D.S.! All features are available.");
+            }
+        }
+
+        function loadColoringMode(forced) {
+            const coloringMode = document.getElementById('coloring-mode');
+            const advancedMode = document.getElementById('advanced-mode');
+            
+            coloringMode.classList.add('active');
+            advancedMode.classList.remove('active');
+            
+            // Initialize canvas
+            const canvas = document.getElementById('coloring-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // Simple coloring page outline
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(50, 50, 200, 200);
+            ctx.beginPath();
+            ctx.arc(150, 150, 80, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Enable drawing
+            let isDrawing = false;
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mousemove', (e) => {
+                if (isDrawing) {
+                    const rect = canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    ctx.fillStyle = KIDSApp.currentColor;
+                    ctx.fillRect(x, y, 10, 10);
+                }
+            });
+        }
+
+        function loadAdvancedMode(simplified) {
+            const coloringMode = document.getElementById('coloring-mode');
+            const advancedMode = document.getElementById('advanced-mode');
+            
+            coloringMode.classList.remove('active');
+            advancedMode.classList.add('active');
+            
+            // Initialize coordinate grid system for button placement
+            initializeGridSystem();
+        }
+
+        function selectColor(color) {
+            KIDSApp.currentColor = color;
+            showAbbMessage(`Great choice! Let's use ${color}!`);
+        }
+
+        // Coordinate Grid System Implementation
+        // Maps x,y coordinates to button actions
+        // Grid: 100 x 200 grid space with origin at (0,0)
+        function initializeGridSystem() {
+            // Register default button positions
+            // Format: registerGridButton(x, y, action)
+            // x: 1-100, y: 1-200
+            
+            // Example: Fart sound button at position (50, 100)
+            registerGridAction(50, 100, 'fart-sound');
+        }
+
+        function registerGridAction(x, y, actionId) {
+            const key = `${x},${y}`;
+            KIDSApp.gridActions.set(key, actionId);
+        }
+
+        function getGridAction(x, y) {
+            const key = `${x},${y}`;
+            return KIDSApp.gridActions.get(key);
+        }
+
+        function placeGridButton(x, y, label) {
+            // Calculate position in 100x200 grid
+            // Convert to percentage for positioning
+            const xPercent = (x / 100) * 100;
+            const yPercent = (y / 200) * 100;
+            
+            showAbbMessage(`You selected ${label}! This feature is coming soon!`);
+            
+            // Register this position
+            registerGridAction(x, y, label.toLowerCase());
+        }
+
+        function playSound(soundType) {
+            if (soundType === 'fart') {
+                showAbbMessage("*Pffft* 💨 Hehe!");
+                // In real implementation, play actual sound
+            }
+        }
+
+        // Abb Assistant Functions
+        function toggleAbbMessage() {
+            const abbMessage = document.getElementById('abb-message');
+            abbMessage.classList.toggle('active');
+        }
+
+        function showAbbMessage(message) {
+            const abbText = document.getElementById('abb-text');
+            const abbMessage = document.getElementById('abb-message');
+            
+            abbText.textContent = message;
+            abbMessage.classList.add('active');
+            
+            setTimeout(() => {
+                abbMessage.classList.remove('active');
+            }, 5000);
+        }
+
+        // Screen Management
+        function switchScreen(fromId, toId) {
+            document.getElementById(fromId).classList.remove('active');
+            document.getElementById(toId).classList.add('active');
+        }
+
+        // Initialize app
+        console.log('K.I.D.S. - Intellectual Development Studio initialized');
+        console.log('Abb assistant ready to help!');
+    </script>
 
 </body>
 </html>
