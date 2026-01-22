@@ -4,14 +4,11 @@
     <title>K.I.D.S. Shack - AbbSist™</title>
     <style>
         body { font-family: 'Comic Sans MS', sans-serif; background: #e0eefd; margin: 0; overflow: hidden; display: flex; height: 100vh; }
-        
-        /* The Work Space (The Morphing Part) */
-        #work-desk { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-        
-        /* The Persistent AbbSist™ Space (The Front Door) */
+        #work-desk { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
         #abb-sidebar { width: 350px; background: white; border-left: 5px solid #333; padding: 20px; display: flex; flex-direction: column; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
-        
-        #chat-history { flex: 1; overflow-y: auto; margin-bottom: 10px; font-size: 1.2rem; line-height: 1.5; }
+        #abb-image-container { width: 100%; height: 250px; border: 3px solid #333; border-radius: 10px; margin-bottom: 15px; overflow: hidden; background: #fafafa; display: flex; align-items: center; justify-content: center; }
+        #abb-image-container img { width: 100%; height: 100%; object-fit: cover; }
+        #chat-history { flex: 1; overflow-y: auto; margin-bottom: 10px; font-size: 1.1rem; line-height: 1.4; border-top: 1px solid #eee; padding-top: 10px; }
         input { width: 90%; padding: 15px; border: 3px solid #333; border-radius: 10px; font-size: 1rem; }
         .abb-text { color: #2a52be; font-weight: bold; margin-bottom: 10px; }
         .user-text { color: #444; margin-bottom: 10px; font-style: italic; }
@@ -26,6 +23,9 @@
 
     <div id="abb-sidebar">
         <h2 style="margin-top:0;">AbbSist™</h2>
+        <div id="abb-image-container">
+            <img src="abb.jpg" alt="Abb the Gatekeeper">
+        </div>
         <div id="chat-history"></div>
         <input type="text" id="user-input" placeholder="Type here to talk..." onkeypress="handleChat(event)">
     </div>
@@ -48,7 +48,6 @@
             chat.scrollTop = chat.scrollHeight;
         }
 
-        // Boot up Abb
         window.onload = () => {
             addText("Abb", hooks[Math.floor(Math.random() * hooks.length)]);
         };
@@ -58,11 +57,8 @@
                 let input = document.getElementById('user-input');
                 let val = input.value;
                 if(!val) return;
-
                 addText("You", val);
                 input.value = "";
-
-                // Adaptive Logic - Circling back to the Fixed Point
                 setTimeout(() => {
                     if (step === 0) {
                         addText("Abb", "Ha! I'm bad at guessing anyway. My eyesight is a bit fuzzy. To get the desk ready, I need to know your name and how many birthdays you've had?");
