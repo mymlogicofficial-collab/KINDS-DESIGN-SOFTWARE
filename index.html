@@ -3,86 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>K.I.D.S. SHACK</title>
+    <title>SE CUSTOMS | THE SHACK</title>
     <style>
-        /* KILL THE SCROLL & BOXES */
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Courier New', Courier, monospace; }
-        
-        #stage { perspective: 1500px; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #2c1e14 0%, #000000 100%); }
-
-        /* THE DOOR FRAME - FULL SCALE */
-        #door-frame { width: 85vw; height: 80vh; max-width: 400px; border: 15px solid #3d2b1f; position: relative; transform-style: preserve-3d; box-shadow: 0 0 100px rgba(0,0,0,1); }
-
-        /* THE ACTUAL DOOR */
-        #shack-door { 
-            position: absolute; width: 100%; height: 100%; background: #5d4037; 
-            cursor: pointer; transform-origin: left; z-index: 10;
-            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.6);
-        }
-
-        #handle { width: 60px; height: 60px; background: #ffd700; border-radius: 50%; position: absolute; right: 30px; top: 50%; box-shadow: 0 0 20px #ffd700; animation: pulse 2s infinite; }
-
-        /* THE INTERIOR REVEAL */
-        #interior { 
-            position: absolute; width: 100%; height: 100%; background: #1a1a1a;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #00ff00; opacity: 0; transition: opacity 1s; 
-        }
-
-        /* ABB'S NEW MOBILE FORM (THE WOOSH) */
-        #abb-sprite {
-            position: absolute; width: 150px; opacity: 0;
-            transform: translate(200px, 200px) scale(0);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* ANIMATIONS */
-        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 10px #ffd700; } 50% { transform: scale(1.1); box-shadow: 0 0 30px #ffd700; } 100% { transform: scale(1); box-shadow: 0 0 10px #ffd700; } }
-        .door-open { transform: rotateY(-120deg); }
-        .show-content { opacity: 1 !important; }
-        .abb-woosh { opacity: 1 !important; transform: translate(0, 0) scale(1) !important; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { width: 100%; height: 100%; background: #000; overflow: hidden; position: fixed; font-family: 'Courier New', monospace; }
+        #main-stage { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #2c1e14 0%, #000 100%); perspective: 2000px; }
+        #door-wrapper { width: 85vw; height: 75vh; max-width: 400px; position: relative; transform-style: preserve-3d; }
+        #shack-door { position: absolute; width: 100%; height: 100%; background: #5d4037; border: 6px solid #3e2723; transform-origin: left; transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 60px rgba(0,0,0,0.8), 25px 0 50px rgba(0,0,0,0.7); cursor: pointer; }
+        #handle { width: 55px; height: 55px; background: #ffd700; border-radius: 50%; position: absolute; right: 25px; top: 50%; box-shadow: 0 0 25px #ffd700; animation: pulse 2s infinite; }
+        #interior { position: absolute; width: 100%; height: 100%; background: #0a0a0a; display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 40px 20px; opacity: 0; transition: opacity 1s; color: #00ff00; text-align: center; }
+        #lila-lantern { width: 100px; height: 100px; background: rgba(255, 150, 50, 0.15); border-radius: 50%; filter: blur(30px); position: absolute; top: 5%; box-shadow: 0 0 50px #ff9800; animation: flicker 4s infinite; }
+        #abb-sprite { width: 140px; position: absolute; bottom: -250px; transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 0 10px #00ff00); }
+        #hub { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; z-index: 10; }
+        .download-btn { padding: 12px 25px; border: 2px solid #00ff00; color: #00ff00; text-decoration: none; font-weight: bold; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; }
+        #footer { color: #444; font-size: 0.65rem; letter-spacing: 1px; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); box-shadow: 0 0 40px #ffd700; } }
+        @keyframes flicker { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+        .door-open { transform: rotateY(-125deg); }
+        .visible { opacity: 1 !important; }
+        .abb-in { bottom: 35% !important; }
     </style>
 </head>
-<body>
-
-<div id="stage">
-    <div id="door-frame">
-        <div id="interior">
-            <img id="abb-sprite" src="https://ial-collab.github.io/abb-image.png" alt="Abb"> <h2 id="status-text" style="margin-top: 150px;">GENESIS STATION LOADED</h2>
-            <p>Welcome to the Studio, Sterling.</p>
-        </div>
-
-        <div id="shack-door" onclick="enterShack()">
-            <div id="handle"></div>
-            <h1 style="color: #2c1e14; letter-spacing: 5px;">K.I.D.S.</h1>
-            <h2 style="color: #2c1e14; font-size: 1rem;">SHACK</h2>
-            <p style="color: #ffd700; margin-top: 20px; font-weight: bold;">KNOCK (TAP)</p>
+<body onclick="primeAudio()">
+    <div id="main-stage">
+        <div id="door-wrapper">
+            <div id="interior">
+                <div id="lila-lantern"></div>
+                <img id="abb-sprite" src="https://ial-collab.github.io/abb-image.png" alt="Abb">
+                <div id="hub">
+                    <h2 style="letter-spacing: 4px; margin-bottom: 10px;">GENESIS STATION</h2>
+                    <a href="#" class="download-btn">CONNECT iOS</a>
+                    <a href="#" class="download-btn">CONNECT ANDROID</a>
+                </div>
+                <div id="footer">
+                    <p>SE CUSTOMS</p>
+                    <p>PROMOTIONAL ADVERTISING & DESIGN</p>
+                    <p>AWAF SECURE INFRASTRUCTURE</p>
+                </div>
+            </div>
+            <div id="shack-door" onclick="knockAndEnter()">
+                <div id="handle"></div>
+                <h1 style="color: #2c1e14; font-size: 3rem; letter-spacing: 8px;">K.I.D.S.</h1>
+                <p style="color: #3e2723; font-weight: bold; letter-spacing: 4px;">SHACK</p>
+            </div>
         </div>
     </div>
-</div>
-
-<script>
-    function enterShack() {
-        const door = document.getElementById('shack-door');
-        const interior = document.getElementById('interior');
-        const abb = document.getElementById('abb-sprite');
-
-        // 1. OPEN DOOR
-        door.classList.add('door-open');
-
-        // 2. REVEAL INTERIOR
-        setTimeout(() => {
-            interior.classList.add('show-content');
-        }, 500);
-
-        // 3. ABB WOOSHES IN
-        setTimeout(() => {
-            abb.classList.add('abb-woosh');
-        }, 1200);
-    }
-</script>
-
+    <audio id="thud" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+    <audio id="creak" src="https://assets.mixkit.co/active_storage/sfx/1090/1090-preview.mp3"></audio>
+    <script>
+        let primed = false;
+        function primeAudio() { if (!primed) { document.getElementById('thud').load(); document.getElementById('creak').load(); primed = true; } }
+        function knockAndEnter() {
+            document.getElementById('thud').play();
+            setTimeout(() => {
+                document.getElementById('creak').play();
+                document.getElementById('shack-door').classList.add('door-open');
+                document.getElementById('interior').classList.add('visible');
+            }, 450);
+            setTimeout(() => { document.getElementById('abb-sprite').classList.add('abb-in'); }, 1300);
+        }
+    </script>
 </body>
 </html>
