@@ -1,8 +1,8 @@
-K.I.D.S.-Intellectual Development Software. K.I.D.S. - for CREATIVE kids. A fully customizable app that adapts and grows WITH your child/youth/AWAF**. Thanks to  AbbSistance™, there's NO MORE "bad guy" MOMENTS.. You don't set the limitations, __they__ do. 
+K.I.N.D.S.-Intellectual Development Software. K.I.N.D.S. - for ALL kinds. A fully customizable app that adapts and grows WITH your child/youth/AWAF**. Thanks to  AbbSistance™, there's NO MORE "bad guy" MOMENTS.. You don't set the limitations, __they__ do. 
 Every question they answer, or can't, begins setting up safe guards and customizing how the app will be displayed. 
 Safety Feature # 1; NO Direct ACCESS to the internet! EVER! Tourguide, Pal, and Safety officer, Abb (or Abb"y") never changes your phones safety settings, Abb doesn't have to. Abb just makes sure the options that may compromise you are never there to begin with. 
 
-If the child/youth/AWAF (Adult w/ Alternate Focus*), using the app can't answer, is unsure, or holding up fingers to answer a question, Abb is going to set K.I.D.S. into WE-Mode (WE-Mode is a function of AbbSistence™.) Abb doesn't go into an automated state, rather, an assist state that allows Abb the ability to continue to set safeguards without concrete answers (if the interactor is constantly unable to answer the questions, this tells Abb that lots of help and guidance will likely be required beyond setup. Limitations will be enabled and reviewed as interactions progresses)
+If the child/youth/AWAF (Adult w/ Alternate Focus*), using the app can't answer, is unsure, or holding up fingers to answer a question, Abb is going to set K.I.N.D.S. into WE-Mode (WE-Mode is a function of AbbSistence™.) Abb doesn't go into an automated state, rather, an assist state that allows Abb the ability to continue to set safeguards without concrete answers (if the interactor is constantly unable to answer the questions, this tells Abb that lots of help and guidance will likely be required beyond setup. Limitations will be enabled and reviewed as interactions progresses)
 This help includes picture prompts, read assist, spelling assist, and read and ask. Abb also offers AbbVice™ for creative guidance and Abbcademics™ for help with studies.
 
 Older kids will have access to more advanced features. 
@@ -26,7 +26,7 @@ It's an optional add on sunscription thats $8.99/mo.
 
 NO Ads, NO upgrades. Excludes free mandatory software/version upgrades. 
 
-K.I.D.S.- for __CREATIVE kids.__ Are you a __CREATIVE__ kid?™
+K.I.N.D.S.- for __ALL kinds. Find your creative kind.
 
 
 
