@@ -100,3 +100,67 @@ init: () => {
     // ... previous init code ...
     BootSequence.run();
 }
+// SE CUSTOMS - K.I.N.D.S. MASTER CONTROL v2.0
+import { Identity } from './config/identity_branding.js';
+import BootSequence from './logic/boot_sequence.js';
+import InfiniteRuler from './logic/infinite_ruler.js';
+import SRuler from './logic/s_ruler_logic.js';
+import MagneticController from '../hardware/drivers/magnetic_controller.js';
+import SensorCalibration from '../hardware/logic/sensor_calibration.js';
+
+const MasterController = {
+    state: {
+        isSystemReady: false,
+        activeTool: 'standard', // 'standard', 'compass', 's-ruler'
+        isLocked: false
+    },
+
+    init: async () => {
+        console.log(`${Identity.fullName} initialization starting...`);
+        
+        // 1. Run the visual/hardware handshake
+        await BootSequence.run();
+        
+        // 2. Set system state
+        MasterController.state.isSystemReady = true;
+        console.log(Identity.getGreeting());
+    },
+
+    // 1. KINETIC INPUT: Handle 2x Tap (Magnet) and 2.1s Hold (Compass)
+    handleInteraction: (type, data) => {
+        if (!MasterController.state.isSystemReady) return;
+
+        switch(type) {
+            case 'TOUCH_START':
+                // Begin 2.1s timer for Infinite Ruler / Compass
+                InfiniteRuler.startHold(data.x, data.y);
+                break;
+
+            case 'TOUCH_END':
+                // Cancel hold timer if lifted before 2.1s
+                InfiniteRuler.cancelHold();
+                break;
+
+            case 'PHYSICAL_TAP':
+                // Signal from tap sensors (GPIO 14/15)
+                const valid = SensorCalibration.validateTap(data.strength);
+                if (valid === "VALID_DOUBLE_TAP") {
+                    MagneticController.processTap(2);
+                    MasterController.state.isLocked = true;
+                }
+                break;
+        }
+    },
+
+    // 2. INTELLECTUAL INPUT: Geometry Constraints
+    applyGeometry: (toolType, points) => {
+        if (toolType === 'S_RULER') {
+            return SRuler.calculateCurve(points.p0, points.p1, points.p2, points.p3);
+        }
+        // Additional tool math logic here
+    }
+};
+
+// Bind to window for global access (Buttons, HTML, Terminal)
+window.MasterController = MasterController;
+MasterController.init();
