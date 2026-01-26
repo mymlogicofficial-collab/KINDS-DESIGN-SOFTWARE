@@ -167,3 +167,11 @@ MasterController.init();
 case 'OVAL_COMPASS':
     const config = OvalingCompass.updateFromTool(points.a, points.slider, points.b);
     return OvalingCompass.calculateEllipse(config.center, config.radiusX, config.radiusY, config.rotation);
+import ExportEngine from './logic/export_engine.js';
+
+// Add this function to MasterController
+const exportProject = () => {
+    const currentDesign = MasterController.state.recordedPoints; // Your saved geometry
+    ExportEngine.printToTerminal(currentDesign);
+    Abb.speak("Geometry converted to code. Ready for export.");
+};
