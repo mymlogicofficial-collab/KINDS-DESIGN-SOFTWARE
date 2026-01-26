@@ -24,3 +24,30 @@ const creationStation = {
     }
 };
 
+// SE CUSTOMS - CREATION STATION FUNCTIONAL LOGIC
+const CreationStation = {
+    // MAGNETIC CANVAS SYSTEM
+    magnets: {
+        state: "OFF",
+        trigger: "double_tap",
+        action: function() {
+            this.state = this.state === "OFF" ? "ON" : "OFF";
+            console.log(`Canvas Magnets: ${this.state}`);
+            return `Magnets ${this.state}`;
+        }
+    },
+
+    // TOOLBOX & CURIOS CABINET
+    storage: {
+        toolbox: "slides_out", // Tool storage area
+        curiosCabinet: "stationary_display", // Personal touches/trophies
+        
+        loadTask: function(ageGroup, version) {
+            // Adjusts tools based on Task Selector (B1 Young v1/v2/v3)
+            const drawerAccess = ageGroup === "B1_Young" ? 2 : 6;
+            return `Opening ${drawerAccess} drawers for Version ${version}`;
+        }
+    }
+};
+
+export default CreationStation;
