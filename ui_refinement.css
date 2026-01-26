@@ -1,0 +1,24 @@
+/* SE CUSTOMS - TASK SELECTOR BUTTONS */
+.task-btn {
+    background: #111;
+    border: 1px solid #88CCFF; /* Matching Abb's glassy blue */
+    color: #FFF;
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    width: 250px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.task-btn:active {
+    background: #88CCFF;
+    color: #000;
+    box-shadow: 0 0 15px #88CCFF;
+}
+
+.task-btn.active {
+    border: 3px solid #00FFCC; /* Visual confirm when task is live */
+}
+
