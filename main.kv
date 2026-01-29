@@ -1,14 +1,43 @@
-# K.I.N.D.S. Visual Layout
-BoxLayout:
+<KindsRoot>:
     orientation: 'vertical'
-    
-    Button:
-        text: '5H PENCIL'
-        on_press: app.trigger_m2c() # Activates Green Blink
-        background_color: (0, 1, 0, 1) if app.m2c_active else (1, 1, 1, 1)
 
-    Button:
-        text: '#7 ADAPTIVE'
-        on_press: app.open_drawer_f() # Activates Green Glow
-        background_color: (0, 0.8, 0, 1) if app.drawer_f_open else (1, 1, 1, 1)
-        
+    # AREA A: THE CANVAS (Top 70%) - Nothing blocks this
+    RelativeLayout:
+        size_hint_y: 0.7
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "CANVAS AREA"
+            color: 0.5, 0.5, 0.5, 1
+
+    # THE WORKBENCH (Middle Strip)
+    BoxLayout:
+        size_hint_y: 0.1
+        canvas.before:
+            Color:
+                rgba: 0.3, 0.3, 0.3, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            text: "Eraser"
+        Button:
+            text: root.active_lead
+            on_press: root.cycle_h_lead()
+
+    # THE DRAWERS (Bottom 20%)
+    BoxLayout:
+        size_hint_y: 0.2
+        spacing: 2
+        Button:
+            text: "E"
+        Button:
+            text: "F"
+        Button:
+            text: "G"
+        Button:
+            text: "H"
