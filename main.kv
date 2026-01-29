@@ -41,3 +41,20 @@
             text: "G"
         Button:
             text: "H"
+    # THE WORKBENCH (Middle Strip)
+    BoxLayout:
+        size_hint_y: 0.1
+        canvas.before:
+            Color:
+                rgba: 0.3, 0.3, 0.3, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            text: "Eraser"
+        Button:
+            text: root.active_lead
+            on_press: root.cycle_h_lead()
+        Button:
+            text: root.active_soft  # This shows the 2B, 4B, 8B
+            on_press: root.cycle_b_lead()
