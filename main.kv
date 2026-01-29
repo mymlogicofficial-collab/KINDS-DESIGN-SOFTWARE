@@ -1,87 +1,85 @@
 <KindsRoot>:
     orientation: 'vertical'
 
-    # AREA A: THE CANVAS (Top 70%)
+    # AREA A: CANVAS
     RelativeLayout:
-        size_hint_y: 0.7
+        size_hint_y: 0.65
         canvas.before:
             Color:
                 rgba: 1, 1, 1, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
-        Label:
-            text: "WORKING WITH: " + root.active_tool_name
-            color: 0.5, 0.5, 0.5, 1
 
-    # THE WORKBENCH (Middle Strip)
+    # THE WORKBENCH (Eraser, Ruler, Triangle)
     BoxLayout:
-        size_hint_y: 0.1
+        orientation: 'vertical'
+        size_hint_y: 0.15
         canvas.before:
             Color:
                 rgba: 0.2, 0.2, 0.2, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
-        Button:
-            text: "Eraser"
-        Button:
-            text: "Tool: " + root.active_tool_name
+        BoxLayout:
+            Button:
+                text: "PINK ERASER"
+                background_color: (1, 0.6, 0.6, 1) if root.eraser_active else (0.4, 0.4, 0.4, 1)
+                on_press: root.toggle_eraser()
+            Button:
+                text: "RULER"
+            Button:
+                text: "TRIANGLE"
 
-    # THE DRAWERS (Bottom 20%)
+    # THE DRAWER SYSTEM
     BoxLayout:
         orientation: 'vertical'
-        size_hint_y: 1.2 if (root.drawer_e_open or root.drawer_f_open or root.drawer_g_open) else 0.2
-        
-        # DRAWER E: THE MASTER GRID (FROM SKETCH)
-        GridLayout:
-            cols: 3
-            size_hint_y: 1 if root.drawer_e_open else 0.001
-            opacity: 1 if root.drawer_e_open else 0
-            
-            # Row 1
-            Button:
-                text: root.active_lead
-                on_press: root.cycle_h_lead()
-            Button:
-                text: root.active_soft
-                on_press: root.cycle_b_lead()
-            Button:
-                text: "#7"
-                on_press: root.select_tool("#7")
-            
-            # Row 2
-            Button:
-                text: "Shader"
-                on_press: root.select_tool("Shader")
-            Button:
-                text: "Cloth Shader"
-                on_press: root.select_tool("Cloth")
-            Button:
-                text: "Finger"
-                on_press: root.select_tool("Finger")
-            
-            # Row 3
-            Button:
-                text: "Highlighter"
-                on_press: root.select_tool("Highlighter")
-            Button:
-                text: "Marker"
-                on_press: root.select_tool("Marker")
-            Button:
-                text: "Paint Brush"
-                on_press: root.select_tool("Paint Brush")
+        size_hint_y: 0.4 if root.drawer_g_open else 0.2
 
-        # DRAWER HANDLES
+        # DRAWER G: DUAL COLOR LAB
+        BoxLayout:
+            size_hint_y: 1 if root.drawer_g_open else 0.001
+            opacity: 1 if root.drawer_g_open else 0
+            padding: 10
+            spacing: 20
+
+            # Color Station 1
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: "Color 1"
+                Slider: # Hue
+                    min: 0
+                    max: 360
+                    value: root.color_1_hue
+                Slider: # Lightness
+                    min: 0
+                    max: 100
+                    value: root.color_1_light
+
+            # Color Station 2
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: "Color 2"
+                Slider: # Hue
+                    min: 0
+                    max: 360
+                    value: root.color_2_hue
+                Slider: # Lightness
+                    min: 0
+                    max: 100
+                    value: root.color_2_light
+
+        # HANDLES
         BoxLayout:
             size_hint_y: 0.2
-            spacing: 2
             Button:
-                text: "E (My Box)"
+                text: "E (GRID)"
                 on_press: root.toggle_drawer('E')
             Button:
-                text: "F (Tips)"
+                text: "F (TIPS)"
                 on_press: root.toggle_drawer('F')
             Button:
-                text: "G (Color)"
+                text: "G (COLOR)"
                 on_press: root.toggle_drawer('G')
