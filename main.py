@@ -3,49 +3,26 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, NumericProperty, BooleanProperty, ListProperty
 
 class KindsRoot(BoxLayout):
-    active_lead = StringProperty("3H")
-    active_soft = StringProperty("2B")
-    active_tip = StringProperty("°")
-    active_tool_name = StringProperty("None") # Current tool from the grid
+    active_tool_name = StringProperty("3H")
+    last_tool_name = StringProperty("None")
+    eraser_active = BooleanProperty(False)
     
     # Drawer States
     drawer_e_open = BooleanProperty(False)
     drawer_f_open = BooleanProperty(False)
     drawer_g_open = BooleanProperty(False)
     
-    # Tool Properties
-    tip_size = NumericProperty(10)
-    tip_opacity = NumericProperty(100)
-    tip_gression = NumericProperty(50)
-    current_color = ListProperty([1, 1, 1, 1])
+    # Dual Color Properties for Drawer G
+    color_1_hue = NumericProperty(0)
+    color_1_light = NumericProperty(50)
+    color_2_hue = NumericProperty(180) # Opposite side of wheel
+    color_2_light = NumericProperty(50)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.h_leads = ["3H", "4H", "5H"]
-        self.b_leads = ["2B", "4B", "8B"]
-        self.tip_shapes = ["°", "\\", "/", "÷", "L"]
-        self.h_index = 0
-        self.b_index = 0
-        self.tip_index = 0
-
-    def cycle_h_lead(self):
-        self.h_index = (self.h_index + 1) % len(self.h_leads)
-        self.active_lead = self.h_leads[self.h_index]
-        self.active_tool_name = self.active_lead
-
-    def cycle_b_lead(self):
-        self.b_index = (self.b_index + 1) % len(self.b_leads)
-        self.active_soft = self.b_leads[self.b_index]
-        self.active_tool_name = self.active_soft
-
-    def cycle_tip_shape(self):
-        self.tip_index = (self.tip_index + 1) % len(self.tip_shapes)
-        self.active_tip = self.tip_shapes[self.tip_index]
-
-    def select_tool(self, name):
-        self.active_tool_name = name
+    def toggle_eraser(self):
+        self.eraser_active = not self.eraser_active
 
     def toggle_drawer(self, drawer):
+        # Only one drawer open at a time to save space
         self.drawer_e_open = (drawer == 'E' and not self.drawer_e_open)
         self.drawer_f_open = (drawer == 'F' and not self.drawer_f_open)
         self.drawer_g_open = (drawer == 'G' and not self.drawer_g_open)
