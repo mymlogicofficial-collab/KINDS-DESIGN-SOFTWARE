@@ -1,30 +1,28 @@
-# Logic for the Multi-Press Lead Selection in Drawer E
-class LeadSelector:
-    def __init__(self):
-        # Define the cycles for different lead types
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import StringProperty
+
+class KindsRoot(BoxLayout):
+    active_lead = StringProperty("3H")
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.h_leads = ["3H", "4H", "5H"]
-        self.b_leads = ["2B", "4B", "8B"]
         self.h_index = 0
-        self.b_index = 0
 
     def cycle_h_lead(self):
-        # Advances the H-lead and loops back to the start
+        # Cycles through 3H, 4H, 5H
         self.h_index = (self.h_index + 1) % len(self.h_leads)
-        active_lead = self.h_leads[self.h_index]
-        return f"Selected Lead: {active_lead}"
+        self.active_lead = self.h_leads[self.h_index]
 
-    def cycle_b_lead(self):
-        # Advances the B-lead and loops back to the start
-        self.b_index = (self.b_index + 1) % len(self.b_leads)
-        active_lead = self.b_leads[self.b_index]
-        return f"Selected Lead: {active_lead}"
+    def toggle_drawer(self, drawer_name):
+        # This is where we will trigger the drawer animations
+        print(f"Opening Drawer {drawer_name}")
 
-# Logic for the "Tap Anywhere" Dismissal
-def on_canvas_touch(instance, touch):
-    # If the user touches the top 70% of the screen (Area A)
-    if touch.y > (Window.height * 0.3):
-        # Send signal to close all open drawers
-        app.close_all_drawers()
-        # Resume drawing immediately
-        return True 
-      
+class KindsApp(App):
+    def build(self):
+        return KindsRoot()
+
+if __name__ == '__main__':
+    KindsApp().run()
+    
