@@ -3,93 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>K.I.N.D.S. Workbench - L & M Slideouts</title>
+    <title>K.I.N.D.S. Engine - Final Wire-Up</title>
     <style>
         body { background: #0e0e0e; color: #e0e0e0; margin: 0; font-family: sans-serif; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
         #Area_A { width: 100%; height: 50px; background: #1a1a1a; display: flex; justify-content: space-around; align-items: center; border-bottom: 2px solid #39ff14; z-index: 100; }
         .mag-btn { background: #222; color: #39ff14; border: 1px solid #39ff14; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-        
-        #Workspace { flex-grow: 1; display: flex; justify-content: center; align-items: center; background: #222; position: relative; }
-        #Main_Canvas { width: 80vw; height: 45vh; background: #fff; box-shadow: 0 0 30px #000; transition: transform 0.1s linear; position: relative; }
-
-        /* [L & M] SLIDE-OUT PANELS */
+        #Workspace { flex-grow: 1; display: flex; justify-content: center; align-items: center; background: #222; position: relative; touch-action: none; }
+        #Main_Canvas { background: #fff; box-shadow: 0 0 30px #000; transition: transform 0.1s linear; cursor: crosshair; }
+        #Workbench { width: 100%; background: #151515; border-top: 1px solid #333; max-height: 40vh; overflow-y: auto; padding-bottom: 20px; }
+        .drawer { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #222; font-size: 12px; }
+        .label { min-width: 80px; color: #888; font-weight: bold; font-size: 10px; }
+        .item { background: #333; margin: 0 5px; padding: 6px 10px; border-radius: 4px; cursor: pointer; border: 1px solid #444; }
         .side-panel { position: fixed; top: 50px; bottom: 150px; width: 200px; background: #1a1a1a; border: 1px solid #333; transition: 0.3s; z-index: 90; padding: 10px; }
-        #Panel_L { left: -220px; border-right: 2px solid #39ff14; } /* Saved Projects */
-        #Panel_M { right: -220px; border-left: 2px solid #39ff14; } /* Import */
-        
+        #Panel_L { left: -220px; border-right: 2px solid #39ff14; }
+        #Panel_M { right: -220px; border-left: 2px solid #39ff14; }
         .panel-open-L { left: 0 !important; }
         .panel-open-M { right: 0 !important; }
-
-        .project-thumb { width: 100%; height: 60px; background: #333; margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
-
-        #Workbench { width: 100%; background: #151515; border-top: 1px solid #333; padding-bottom: 30px; }
-        .drawer { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #222; font-size: 13px; }
-        .label { min-width: 90px; color: #888; font-weight: bold; font-size: 10px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
     <div id="Area_A">
-        <button class="mag-btn" onclick="togglePanel('L')">[L] PROJECTS</button>
+        <button class="mag-btn" onclick="toggleP('L')">[L] VAULT</button>
         <button class="mag-btn" onclick="snap0()">🧲 SNAP 0°</button>
-        <button class="mag-btn" onclick="togglePanel('M')">[M] IMPORT</button>
+        <button class="mag-btn" onclick="toggleP('M')">[M] GATEWAY</button>
+        <input type="range" min="0" max="360" value="0" oninput="rot(this.value)">
     </div>
 
-    <div id="Panel_L" class="side-panel">
-        <h4 style="color:#39ff14; margin-top:0;">[L] SAVED WORK</h4>
-        <div class="project-thumb">PROJECT_01.PNG</div>
-        <div class="project-thumb">SE_LOGO_V2.PNG</div>
-        <button class="mag-btn" style="width:100%" onclick="saveProject()">SAVE CURRENT</button>
-    </div>
-
-    <div id="Panel_M" class="side-panel">
-        <h4 style="color:#39ff14; margin-top:0;">[M] GATEWAY</h4>
-        <p style="font-size:10px;">Bring image to canvas:</p>
-        <input type="file" id="importInput" style="width:100%; font-size:10px;" onchange="importToCanvas(event)">
-        <div id="Import_Preview" style="width:100%; height:100px; border:1px dashed #444; margin-top:10px;"></div>
-    </div>
+    <div id="Panel_L" class="side-panel"><h4>PROJECTS</h4><button class="mag-btn" onclick="save()">SAVE PNG</button></div>
+    <div id="Panel_M" class="side-panel"><h4>IMPORT</h4><input type="file" onchange="imp(event)"></div>
 
     <div id="Workspace">
-        <div id="Main_Canvas">
-            <img id="Canvas_Img" style="width:100%; height:100%; display:none; object-fit: contain;">
-        </div>
+        <canvas id="Main_Canvas"></canvas>
     </div>
 
     <div id="Workbench">
-        <div class="drawer">
-            <span class="label">STATUS:</span>
-            <span id="status-text" style="color:#39ff14;">Workbench Ready</span>
+        <div class="drawer"><span class="label">[H] MIXER:</span>
+            <input type="color" id="c1" value="#ff0000" oninput="mix()">
+            <input type="color" id="c2" value="#0000ff" oninput="mix()">
+            <input type="range" id="ratio" min="0" max="100" value="50" oninput="mix()">
+            <div id="preview" style="width:30px; height:20px; border:1px solid #fff; margin-left:10px;"></div>
+        </div>
+        <div class="drawer"><span class="label">[G] SIZE:</span>
+            <input type="range" id="penSize" min="1" max="50" value="5">
+        </div>
+        <div class="drawer"><span class="label">[F] LEAD:</span>
+            <div class="item" onclick="setHardness(0.2)">H (Hard)</div>
+            <div class="item" onclick="setHardness(0.8)">B (Soft)</div>
         </div>
     </div>
 
     <script>
-        let rotation = 0;
-        let isLocked = false;
         const canvas = document.getElementById('Main_Canvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false, rotation = 0, isLocked = false, hardness = 0.5, activeCol = "#000";
 
-        // [A] MAGNET LOGIC
-        function snap0() { rotation = 0; canvas.style.transform = 'rotate(0deg)'; }
-        
-        // [L & M] TOGGLE LOGIC
-        function togglePanel(id) {
-            document.getElementById('Panel_'+id).classList.toggle('panel-open-'+id);
+        // Initialize Canvas Size
+        canvas.width = window.innerWidth * 0.8;
+        canvas.height = window.innerHeight * 0.45;
+
+        // [A] Rotation Logic
+        function rot(v) { if(!isLocked) canvas.style.transform = `rotate(${v}deg)`; }
+        function snap0() { canvas.style.transform = 'rotate(0deg)'; isLocked = true; }
+        function toggleP(id) { document.getElementById('Panel_'+id).classList.toggle('panel-open-'+id); }
+
+        // [H] Color Blending
+        function mix() {
+            const r = document.getElementById('ratio').value / 100;
+            const c1 = document.getElementById('c1').value, c2 = document.getElementById('c2').value;
+            const rgb1 = [parseInt(c1.substring(1,3),16), parseInt(c1.substring(3,5),16), parseInt(c1.substring(5,7),16)];
+            const rgb2 = [parseInt(c2.substring(1,3),16), parseInt(c2.substring(3,5),16), parseInt(c2.substring(5,7),16)];
+            const mix = rgb1.map((v, i) => Math.floor(v * (1-r) + rgb2[i] * r));
+            activeCol = `rgb(${mix[0]},${mix[1]},${mix[2]})`;
+            document.getElementById('preview').style.background = activeCol;
         }
 
-        // [M] IMPORT LOGIC
-        function importToCanvas(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const img = document.getElementById('Canvas_Img');
-                img.src = reader.result;
-                img.style.display = 'block';
-                document.getElementById('status-text').innerText = "Image Imported [M]";
-            }
-            reader.readAsDataURL(event.target.files[0]);
+        // DRAWING ENGINE
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
         }
 
-        function saveProject() {
-            alert("Project Pushed to Vault [L]");
+        function start(e) { drawing = true; draw(e); }
+        function stop() { drawing = false; ctx.beginPath(); }
+        function setHardness(h) { hardness = h; }
+
+        function draw(e) {
+            if (!drawing) return;
+            const pos = getPos(e);
+            ctx.lineWidth = document.getElementById('penSize').value;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = activeCol;
+            ctx.globalAlpha = hardness;
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
         }
+
+        canvas.addEventListener('mousedown', start);
+        canvas.addEventListener('mousemove', draw);
+        window.addEventListener('mouseup', stop);
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); });
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+        canvas.addEventListener('touchend', stop);
+
+        mix(); // Initial color
     </script>
 </body>
 </html>
