@@ -5,17 +5,18 @@
     <style>
         body { background: #000; color: #39ff14; margin: 0; font-family: monospace; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
         #Top_Bar { height: 60px; border-bottom: 2px solid #39ff14; display: flex; align-items: center; justify-content: space-around; background: #111; z-index: 100; }
-        .btn { background: #222; color: #39ff14; border: 1px solid #39ff14; padding: 6px; border-radius: 4px; font-size: 10px; font-weight: bold; }
-        
+        .btn { background: #222; color: #39ff14; border: 1px solid #39ff14; padding: 6px; border-radius: 4px; font-weight: bold; font-size: 10px; }
         #Workspace { flex-grow: 1; display: flex; justify-content: center; align-items: center; background: #1a1a1a; touch-action: none; position: relative; }
         #Main_Canvas { background: #fff; box-shadow: 0 0 20px #000; transition: transform 0.1s; }
-
-        #Mixer_Workbench { background: #111; border-top: 2px solid #333; padding: 10px; display: flex; flex-direction: column; gap: 10px; }
-        .engine-row { display: flex; align-items: center; gap: 15px; border: 1px solid #222; padding: 8px; border-radius: 8px; }
-        .wheel-container { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #39ff14; position: relative; overflow: hidden; flex-shrink: 0; }
-        input[type="color"] { position: absolute; top: -10px; left: -10px; width: 80px; height: 80px; border: none; cursor: pointer; }
+        #Mixer_Workbench { background: #111; border-top: 2px solid #333; padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+        .engine-row { display: flex; align-items: center; gap: 20px; border: 1px solid #222; padding: 10px; border-radius: 12px; }
+        .wheel-wrap { position: relative; width: 70px; height: 70px; flex-shrink: 0; }
+        /* Using a circular input to simulate the wheel with tone dot */
+        input[type="color"] { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #39ff14; background: none; cursor: pointer; appearance: none; -webkit-appearance: none; }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
         input[type="range"] { flex-grow: 1; accent-color: #39ff14; }
-        .label-tag { font-size: 14px; font-weight: bold; min-width: 20px; color: #fff; }
+        .num { font-size: 20px; font-weight: bold; color: #fff; width: 20px; }
     </style>
 </head>
 <body>
@@ -24,7 +25,7 @@
         <button class="btn" onclick="snap()">🧲 SNAP 0°</button>
         <div style="text-align:center;">
             <span style="font-size:8px;">ROTATION</span><br>
-            <input type="range" id="rotSlider" min="0" max="360" value="0" oninput="rotateCanvas(this.value)">
+            <input type="range" id="rot" min="0" max="360" value="0" oninput="rotateCanvas(this.value)">
         </div>
         <button class="btn" onclick="alert('L-Vault')">[L]</button>
         <button class="btn" onclick="alert('M-Gateway')">[M]</button>
@@ -36,78 +37,79 @@
 
     <div id="Mixer_Workbench">
         <div class="engine-row">
-            <span class="label-tag">1</span>
-            <div class="wheel-container"><input type="color" id="color1" value="#ff0000"></div>
-            <input type="range" id="slider1" min="0" max="100" value="80">
+            <span class="num">1</span>
+            <div class="wheel-wrap"><input type="color" id="c1" value="#ffff00" oninput="mix()"></div>
+            <input type="range" id="s1" min="0" max="100" value="50" oninput="mix()">
         </div>
 
         <div class="engine-row">
-            <span class="label-tag">2</span>
-            <div class="wheel-container"><input type="color" id="color2" value="#0000ff"></div>
-            <input type="range" id="slider2" min="0" max="100" value="40">
+            <span class="num">2</span>
+            <div class="wheel-wrap"><input type="color" id="c2" value="#0000ff" oninput="mix()"></div>
+            <input type="range" id="s2" min="0" max="100" value="50" oninput="mix()">
         </div>
         
-        <div style="display:flex; justify-content:space-between; padding:0 10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
             <span style="font-size:10px;">LEAD SIZE:</span>
-            <input type="range" id="penSize" min="1" max="50" value="10" style="max-width:200px;">
+            <input type="range" id="sz" min="1" max="60" value="20" style="max-width:75%;">
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('Main_Canvas');
-        const ctx = canvas.getContext('2d');
-        let isDrawing = false, angle = 0;
+        const cvs = document.getElementById('Main_Canvas');
+        const ctx = cvs.getContext('2d');
+        let drawing = false, angle = 0, activeColor = "rgb(0,255,0)";
 
-        canvas.width = window.innerWidth * 0.9;
-        canvas.height = window.innerHeight * 0.45;
+        cvs.width = window.innerWidth * 0.9;
+        cvs.height = window.innerHeight * 0.4;
 
-        function rotateCanvas(v) { angle = v; canvas.style.transform = `rotate(${v}deg)`; }
-        function snap() { angle = 0; canvas.style.transform = 'rotate(0deg)'; document.getElementById('rotSlider').value = 0; }
+        function rotateCanvas(v) { angle = v; cvs.style.transform = `rotate(${v}deg)`; }
+        function snap() { angle = 0; cvs.style.transform = 'rotate(0deg)'; document.getElementById('rot').value = 0; }
+
+        function mix() {
+            const h1 = document.getElementById('c1').value, h2 = document.getElementById('c2').value;
+            const w1 = document.getElementById('s1').value / 100, w2 = document.getElementById('s2').value / 100;
+            const t = w1 + w2 || 1;
+            const r1 = parseInt(h1.substring(1,3),16), g1 = parseInt(h1.substring(3,5),16), b1 = parseInt(h1.substring(5,7),16);
+            const r2 = parseInt(h2.substring(1,3),16), g2 = parseInt(h2.substring(3,5),16), b2 = parseInt(h2.substring(5,7),16);
+            const r = Math.floor((r1 * w1 + r2 * w2) / t), g = Math.floor((g1 * w1 + g2 * w2) / t), b = Math.floor((b1 * w1 + b2 * w2) / t);
+            activeColor = `rgb(${r},${g},${b})`;
+        }
 
         function getPos(e) {
-            const rect = canvas.getBoundingClientRect();
+            const rect = cvs.getBoundingClientRect();
             const cx = e.touches ? e.touches[0].clientX : e.clientX;
             const cy = e.touches ? e.touches[0].clientY : e.clientY;
-            let x = cx - (rect.left + rect.width / 2);
-            let y = cy - (rect.top + rect.height / 2);
+            let x = cx - (rect.left + rect.width / 2), y = cy - (rect.top + rect.height / 2);
             let rad = -angle * (Math.PI / 180);
             return {
-                x: x * Math.cos(rad) - y * Math.sin(rad) + canvas.width / 2,
-                y: x * Math.sin(rad) + y * Math.cos(rad) + canvas.height / 2
+                x: x * Math.cos(rad) - y * Math.sin(rad) + cvs.width / 2,
+                y: x * Math.sin(rad) + y * Math.cos(rad) + cvs.height / 2
             };
         }
 
         function draw(e) {
-            if (!isDrawing) return;
-            const pos = getPos(e);
-            const size = document.getElementById('penSize').value;
-            
-            // LAYER 1: First Wheel + Slider
-            ctx.globalAlpha = document.getElementById('slider1').value / 100;
-            ctx.strokeStyle = document.getElementById('color1').value;
-            ctx.lineWidth = size;
+            if (!drawing) return;
+            const p = getPos(e);
+            ctx.lineWidth = document.getElementById('sz').value;
             ctx.lineCap = 'round';
-            ctx.lineTo(pos.x, pos.y);
+            ctx.strokeStyle = activeColor;
+            ctx.globalAlpha = Math.max(document.getElementById('s1').value, document.getElementById('s2').value) / 100;
+            ctx.lineTo(p.x, p.y);
             ctx.stroke();
-
-            // LAYER 2: Second Wheel + Slider (Dual-Tone Effect)
-            ctx.globalAlpha = document.getElementById('slider2').value / 100;
-            ctx.strokeStyle = document.getElementById('color2').value;
-            ctx.stroke();
-
             ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
+            ctx.moveTo(p.x, p.y);
         }
 
-        function start(e) { isDrawing = true; ctx.beginPath(); draw(e); }
-        function stop() { isDrawing = false; }
+        function start(e) { drawing = true; ctx.beginPath(); draw(e); }
+        function stop() { drawing = false; }
 
-        canvas.addEventListener('mousedown', start);
-        canvas.addEventListener('mousemove', draw);
+        cvs.addEventListener('mousedown', start);
+        cvs.addEventListener('mousemove', draw);
         window.addEventListener('mouseup', stop);
-        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); });
-        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
-        canvas.addEventListener('touchend', stop);
+        cvs.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); });
+        cvs.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+        cvs.addEventListener('touchend', stop);
+        mix();
     </script>
 </body>
 </html>
