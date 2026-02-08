@@ -91,6 +91,16 @@
     
 
 <script>
+    // INITIALIZE SYSTEM INTEGRITY
+window.onload = () => {
+    console.log("Abb: 'System check starting...'");
+    // This calls your RunIntegrityCheck logic
+    RunIntegrityCheck(); 
+    
+    // Set the initial "Easy" state
+    morphToTask('art'); 
+};
+    
     // --- GLOBAL SETUP ---
     const cvs = document.getElementById('Main_Canvas');
     const ctx = cvs.getContext('2d');
