@@ -28,4 +28,15 @@ button:hover {
     background: #00ffff;
     color: #000;
 }
+/* Protocol: Toolbox starts visible but can slide completely off-screen */
+#kinds-toolbox {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* The 'Away' state - slides down 90% so only the Recall tab peaks out */
+.toolbox-hidden {
+    transform: translateY(calc(100% - 30px)); 
+}
+
 
