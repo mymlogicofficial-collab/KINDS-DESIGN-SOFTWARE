@@ -2,207 +2,135 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KInDS - For ALL KInDS</title>
+    <title>KInDS - Creation Station</title>
     <style>
-        body { background: #000; color: #39ff14; margin: 0; font-family: sans-serif; overflow: hidden; }
+        body { background: #000; color: #39ff14; margin: 0; font-family: sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+        #kinds-hub { width: 100vw; height: 100vh; max-width: 450px; display: flex; flex-direction: column; position: relative; border: 1px solid #222; }
         
-        /* Main Container */
-        #kinds-hub { display: flex; flex-direction: column; height: 100vh; max-width: 450px; margin: auto; border: 2px solid #333; }
-
-        /* Stage Area (The Switcher) */
-        #stage { flex-grow: 1; position: relative; overflow: hidden; background: #111; }
-
-        /* Layers */
-        .layer { position: absolute; width: 100%; height: 100%; transition: transform 0.5s ease; display: none; }
+        /* Stage Area */
+        #stage { flex-grow: 1; position: relative; background: #111; overflow: hidden; }
+        .layer { position: absolute; width: 100%; height: 100%; display: none; padding: 10px; box-sizing: border-box; }
         .active-layer { display: block; }
 
-        /* Media Desk / Road Flare Styles [cite: 2026-02-07] */
-        #video-screen { width: 90%; height: 200px; background: #000; margin: 20px auto; border: 2px solid #fff; position: relative; }
-        .green-flash { animation: flash-green 1s infinite alternate; box-shadow: 0 0 20px #2ecc71; }
-        @keyframes flash-green { from { background: #27ae60; } to { background: #2ecc71; } }
+        /* Canvas & Media */
+        #Main_Canvas { background: transparent; border: 1px solid #333; display: block; margin: auto; touch-action: none; }
+        #video-screen { width: 90%; height: 180px; background: #000; margin: 20px auto; border: 2px solid #fff; position: relative; }
 
-        /* Canvas Styles */
-        #Main_Canvas { background: transparent; border: 1px solid #39ff14; display: block; margin: auto; touch-action: none; }
+        /* Perry-Plex Toolbox */
+        #toolbox {
+            position: fixed; bottom: 0; width: 100%; max-width: 450px;
+            background: #1a1a1a; border-top: 3px solid #00ffff;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+        .toolbox-hidden { transform: translateY(calc(100% - 35px)); }
 
-        /* Drawer/Navigation */
-        #Bottom_Nav { height: 70px; display: flex; justify-content: space-around; align-items: center; background: #222; border-top: 2px solid #333; }
-        .nav-btn { font-size: 24px; cursor: pointer; filter: grayscale(1); transition: 0.3s; }
-        .nav-btn.active { filter: grayscale(0); transform: scale(1.2); }
+        /* Recall Tab */
+        #recall-tab {
+            position: absolute; top: -30px; right: 10px; background: #1a1a1a;
+            border: 2px solid #00ffff; border-bottom: none; border-radius: 8px 8px 0 0;
+            padding: 5px 15px; color: #00ffff; font-size: 12px; cursor: pointer;
+        }
+
+        /* Drawers */
+        .drawer-row { display: flex; gap: 5px; padding: 5px 10px; }
+        .drawer { background: #000; border: 1px solid #333; display: flex; justify-content: space-around; align-items: center; min-height: 50px; }
+        button { background: #222; border: 1px solid #00ffff; color: #00ffff; padding: 8px; font-size: 10px; cursor: pointer; }
+        
+        .green-flash { animation: flash-green 1s infinite alternate; box-shadow: 0 0 15px #39ff14; }
+        @keyframes flash-green { from { border-color: #27ae60; } to { border-color: #39ff14; } }
     </style>
 </head>
 <body>
 
 <div id="kinds-hub">
-    <div style="padding: 10px; display: flex; justify-content: space-between; font-size: 12px; background: #111;">
+    <div style="padding: 10px; display: flex; justify-content: space-between; font-size: 10px; background: #111; border-bottom: 1px solid #222;">
         <span>KInDS™ CREATION-STATION</span>
         <span id="abb-rail">Abb: Watching...</span>
     </div>
 
     <div id="stage">
-        <div id="layer-media" class="layer active-layer" style="padding: 10px;">
-            <div id="video-screen">
-                <div id="abb-hand" style="display:none; position:absolute; font-size: 50px; z-index: 100;">👉</div>
-                <p id="abb-voice" style="text-align:center; margin-top: 80px;">Abb: "Ready to edit?"</p>
-            </div>
-            <div style="display: flex; justify-content: space-around; align-items: center;">
-                <input type="range" id="speed-knob" style="accent-color: #ff69b4;">
-                <button id="next-move" style="background: #27ae60; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold;">NEXT</button>
-            </div>
+        <div id="layer-art" class="layer active-layer"><canvas id="Main_Canvas"></canvas></div>
+        <div id="layer-video" class="layer">
+            <div id="video-screen"><p style="text-align:center; margin-top:80px; color:#444;">[VIDEO EDITOR]</p></div>
         </div>
-
-        <div id="layer-design" class="layer" style="background: #222; padding: 20px;">
-            <h3 style="text-align:center;">Prime Time Design</h3>
-            <div style="background: #444; height: 150px; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 80px; position: relative;">
-                <span id="car-body">🚗</span>
-                <span id="spoiler" style="display:none; position:absolute; top: 30px; right: 50px;">📐</span>
-            </div>
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
-                <button onclick="snap('spoiler')" style="background:orange; padding: 10px; border:none; border-radius:5px;">+ Spoiler</button>
-                <button onclick="snap('paint')" style="background:blue; padding: 10px; border:none; border-radius:5px; color:white;">+ Paint</button>
-            </div>
-        </div>
-
-        <div id="layer-art" class="layer">
-            <div style="display: flex; justify-content: space-between; padding: 5px;">
-                <button onclick="peelSticker()">[L] VAULT</button>
-                <button onclick="autoSort()">[M] LOGIC</button>
-            </div>
-            <canvas id="Main_Canvas"></canvas>
-            <div style="padding: 10px; display: flex; align-items: center; gap: 10px;">
-                <input type="color" id="c1" value="#39ff14">
-                <input type="range" id="density" style="flex-grow: 1;">
-                <button onclick="ctx.clearRect(0,0,cvs.width,cvs.height)">CLEAR</button>
-            </div>
-        </div>
+        <div id="layer-design" class="layer"><h3 style="text-align:center;">Prime Time</h3><p style="text-align:center; font-size:50px;">🏎️</p></div>
     </div>
 
-    <div id="Bottom_Nav">
-        <div class="nav-btn active" onclick="showLayer('media', this)">📼</div>
-        <div class="nav-btn" onclick="showLayer('design', this)">🏎️</div>
-        <div class="nav-btn" onclick="showLayer('art', this)">🎨</div>
+    <div id="toolbox">
+        <div id="recall-tab" onclick="toggleTools()">🛠️ RECALL</div>
+        
+        <div class="drawer-row">
+            <div class="drawer" style="width: 100%; flex-direction: column; padding: 5px;">
+                <span style="font-size: 8px; color: #555;">DRAWER E: MASTER TASK</span>
+                <div style="display: flex; gap: 10px;">
+                    <button id="btn-art" onclick="morphTo('art')">🎨 ART</button>
+                    <button id="btn-video" onclick="morphTo('video')">📼 VIDEO</button>
+                    <button id="btn-design" onclick="morphTo('design')">🏎️ DESIGN</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-row">
+            <div id="Drawer-F" class="drawer" style="flex: 2;"></div>
+            <div id="Drawer-G" class="drawer" style="flex: 1;"></div>
+        </div>
+
+        <div class="drawer-row">
+            <button onclick="alert('Vault')" style="flex:1">[L] VAULT</button>
+            <button onclick="alert('Logic')" style="flex:1">[M] LOGIC</button>
+        </div>
     </div>
 </div>
-        <div style="display: flex; justify-content: space-around; align-items: center; background: #222; border-top: 2px solid #333; height: 60px; position: fixed; bottom: 0; width: 100%; max-width: 450px;">
-        <div onclick="location.reload()" style="font-size: 24px; cursor: pointer;">📼</div>
-        <div onclick="alert('Morphing to Prime Time Design...')" style="font-size: 24px; cursor: pointer;">🏎️</div>
-        <div onclick="alert('Opening Art Studio...')" style="font-size: 24px; cursor: pointer;">🎨</div>
-        <div onclick="alert('AbbCademics: Loading...')" style="font-size: 24px; opacity: 0.5;">📚</div>
-        </div>
-    <div id="Creation-Station" style="position: fixed; bottom: 0; width: 100%; max-width: 450px; background: #1a1a1a; border-top: 3px solid #00ffff; transition: transform 0.4s ease;">
-    
-    <div onclick="toggleWorkbench()" style="position: absolute; top: -25px; right: 10px; background: #1a1a1a; border: 1px solid #00ffff; border-bottom: none; border-radius: 5px 5px 0 0; padding: 2px 10px; font-size: 12px; opacity: 0.6; cursor: pointer;">🛠️ RECALL</div>
-
-    <div id="Drawer-E" style="padding: 10px; border-bottom: 1px solid #333; text-align: center;">
-        <div style="font-size: 10px; color: #00ffff; margin-bottom: 5px;">MASTER TASK</div>
-        <div style="display: flex; justify-content: space-around;">
-            <button onclick="morphTo('art')" style="font-size: 10px; padding: 5px;">🎨 ART</button>
-            <button onclick="morphTo('video')" style="font-size: 10px; padding: 5px;">📼 VIDEO</button>
-            <button onclick="morphTo('design')" style="font-size: 10px; padding: 5px;">🏎️ DESIGN</button>
-        </div>
-    </div>
-
-    <div id="Tool-Drawers" style="display: grid; grid-template-columns: 2fr 1fr; gap: 5px; padding: 10px; height: 80px;">
-        <div id="Drawer-F" style="border: 1px solid #333; background: #000; display: flex; align-items: center; justify-content: space-around;">
-            </div>
-        <div id="Drawer-G" style="border: 1px solid #333; background: #000; display: flex; align-items: center; justify-content: center;">
-            </div>
-    </div>
-    </div>
-    
-    
 
 <script>
-    // INITIALIZE SYSTEM INTEGRITY
-window.onload = () => {
-    console.log("Abb: 'System check starting...'");
-    // This calls your RunIntegrityCheck logic
-    RunIntegrityCheck(); 
-    
-    // Set the initial "Easy" state
-    morphToTask('art'); 
-};
-    
-    // --- GLOBAL SETUP ---
     const cvs = document.getElementById('Main_Canvas');
     const ctx = cvs.getContext('2d');
     cvs.width = window.innerWidth * 0.9;
-    cvs.height = window.innerHeight * 0.4;
+    cvs.height = window.innerHeight * 0.5;
     let drawing = false;
 
-    // --- NAVIGATION LOGIC ---
-    function showLayer(layerId, btn) {
-        document.querySelectorAll('.layer').forEach(l => l.classList.remove('active-layer'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('layer-' + layerId).classList.add('active-layer');
-        btn.classList.add('active');
-        resetAbbTimer();
+    // --- RECALL PROTOCOL ---
+    function toggleTools() {
+        document.getElementById('toolbox').classList.toggle('toolbox-hidden');
     }
 
-    // --- ABBASIST ROAD FLARE [cite: 2026-02-07] ---
-    let timer;
-    const nextBtn = document.getElementById('next-move');
-    const hand = document.getElementById('abb-hand');
+    // --- PERRY-PLEX MORPH ---
+    function morphTo(task) {
+        // Switch Stage
+        document.querySelectorAll('.layer').forEach(l => l.style.display = 'none');
+        document.getElementById('layer-' + task).style.display = 'block';
 
-    function resetAbbTimer() {
-        clearTimeout(timer);
-        nextBtn.classList.remove('green-flash');
-        hand.style.display = 'none';
-        timer = setTimeout(() => {
-            nextBtn.classList.add('green-flash');
-            hand.style.display = 'block';
-            hand.style.top = (nextBtn.offsetTop - 50) + "px";
-        }, 10000);
-    }
+        const f = document.getElementById('Drawer-F');
+        const g = document.getElementById('Drawer-G');
 
-    // --- ENGINE LOGIC (Sticker/Morph) ---
-    function snap(type) {
-        if(type === 'spoiler') {
-            const s = document.getElementById('spoiler');
-            s.style.display = s.style.display === 'none' ? 'block' : 'none';
-        } else {
-            const c = document.getElementById('car-body');
-            c.innerText = c.innerText === '🚗' ? '🚙' : '🚗';
+        if (task === 'art') {
+            f.innerHTML = '<button onclick="setTool(15)">🖍️</button><button onclick="setTool(5)">🖊️</button>';
+            g.innerHTML = '<span onclick="ctx.clearRect(0,0,cvs.width,cvs.height)" style="font-size:20px; cursor:pointer;">🧼</span>';
+            document.getElementById('abb-rail').innerText = "Abb: 'Art Bench Ready'";
+        } else if (task === 'video') {
+            f.innerHTML = '<button>✂️ TRIM</button><button>🎞️ CLIP</button>';
+            g.innerHTML = '<button>🔄</button>';
+            document.getElementById('abb-rail').innerText = "Abb: 'Video Bench Ready'";
         }
     }
 
     // --- DRAWING ENGINE ---
-    cvs.addEventListener('pointerdown', (e) => { drawing = true; ctx.beginPath(); });
+    function setTool(size) { ctx.lineWidth = size; ctx.lineCap = 'round'; ctx.strokeStyle = '#39ff14'; }
+    cvs.addEventListener('pointerdown', () => { 
+        drawing = true; ctx.beginPath(); 
+        document.getElementById('toolbox').classList.add('toolbox-hidden'); // Auto-hide on work
+    });
     cvs.addEventListener('pointermove', (e) => {
         if (!drawing) return;
-        ctx.lineWidth = 15;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = document.getElementById('c1').value;
         ctx.lineTo(e.offsetX, e.offsetY);
         ctx.stroke();
     });
     window.addEventListener('pointerup', () => drawing = false);
 
-    // --- UTILITIES ---
-    function peelSticker() { alert("Image Captured to Vault!"); }
-    function autoSort() { alert("M-Logic: Image Cataloged!"); }
-
-    document.addEventListener('pointerdown', resetAbbTimer);
-    resetAbbTimer();
-    // RECALL PROTOCOL
-function toggleTools() {
-    const toolbox = document.getElementById('kinds-toolbox');
-    toolbox.classList.toggle('toolbox-hidden');
-    
-    // Abb watches the move
-    const isHidden = toolbox.classList.contains('toolbox-hidden');
-    document.getElementById('abb-rail').innerText = isHidden ? "Abb: 'Focus Mode Active'" : "Abb: 'Tools Ready'";
-    
-    resetAbbTimer();
-}
-
-// Auto-hide when drawing starts to clear the path
-cvs.addEventListener('pointerdown', () => {
-    const toolbox = document.getElementById('kinds-toolbox');
-    if (!toolbox.classList.contains('toolbox-hidden')) {
-        toolbox.classList.add('toolbox-hidden');
-    }
-});
-    
+    // Initial State
+    morphTo('art');
+    setTool(10);
 </script>
 
 </body>
