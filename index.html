@@ -1,163 +1,151 @@
-<div id="media-desk" style="background: #2c3e50; padding: 20px; border-radius: 15px; border: 5px solid red; position: relative;">
-  
-  <div id="video-screen" style="width: 100%; height: 200px; background: black; border: 3px solid #fff; border-radius: 10px; overflow: hidden; position: relative;">
-    <div id="abb-hand" style="display:none; position:absolute; font-size: 40px; z-index: 100;">👉</div>
-    <p id="abb-text" style="color: white; position: absolute; bottom: 10px; width: 100%; text-align: center; font-family: sans-serif;">Abb: "What are we making?"</p>
-  </div>
-
-  <div style="display: flex; justify-content: space-around; margin-top: 20px;">
-    <div style="text-align: center;">
-      <input type="range" id="speed-knob" min="0.5" max="3" step="0.1" value="1" style="accent-color: #ff69b4; width: 80px;">
-      <p style="color: #ff69b4; font-size: 10px;">SPEED</p>
-    </div>
-    
-    <button id="next-move" class="road-flare" style="padding: 10px; border-radius: 50%; border: none; background: #27ae60; color: white;">NEXT</button>
-  </div>
-
-  <div id="odds-layer" style="opacity: 1; display: none;"></div>
-</div>
-
-<style>
-/* Road Flare Animation [cite: 2026-02-07] */
-.green-flash {
-  animation: flash-green 1.5s infinite;
-  box-shadow: 0 0 20px #2ecc71 !important;
-  border: 4px solid #2ecc71 !important;
-}
-
-@keyframes flash-green {
-  0% { background-color: #27ae60; }
-  50% { background-color: #2ecc71; }
-  100% { background-color: #27ae60; }
-}
-</style>
-
-<script>
-let activityTimer;
-const roadFlareElement = document.getElementById('next-move');
-const abbHand = document.getElementById('abb-hand');
-
-// 1. Road Flare Timer [cite: 2026-02-07]
-function startRoadFlareTimer() {
-    clearTimeout(activityTimer);
-    roadFlareElement.classList.remove('green-flash');
-    abbHand.style.display = 'none';
-
-    activityTimer = setTimeout(() => {
-        // Abb chimes in with the Green Flash
-        roadFlareElement.classList.add('green-flash');
-        console.log("AbbAsist™: Pointing the way!");
-        
-        // The Hovering Hand [cite: 2026-02-07]
-        abbHand.style.display = 'block';
-        abbHand.style.top = (roadFlareElement.offsetTop - 40) + "px";
-        abbHand.style.left = roadFlareElement.offsetLeft + "px";
-    }, 10000); // 10 second timer
-}
-
-// 2. Playback Speed Logic (Pink Knob)
-document.getElementById('speed-knob').addEventListener('input', (e) => {
-    console.log("Speed set to: " + e.target.value + "x");
-    startRoadFlareTimer(); // Reset timer on use
-});
-
-// Start monitoring for Road Flare
-document.addEventListener('click', startRoadFlareTimer);
-startRoadFlareTimer();
-</script>
-roadFlareElement.offsetLeft<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KInDS - For ALL KInDS</title>
     <style>
-        body { background: #000; color: #39ff14; margin: 0; font-family: monospace; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
-        #Top_Bar { height: 60px; border-bottom: 2px solid #39ff14; display: flex; align-items: center; justify-content: space-around; background: #111; z-index: 100; }
-        .btn { background: #222; color: #39ff14; border: 1px solid #39ff14; padding: 8px; border-radius: 4px; font-weight: bold; font-size: 11px; }
-        #Workspace { flex-grow: 1; display: flex; justify-content: center; align-items: center; background: #1a1a1a; touch-action: none; position: relative; }
-        #Main_Canvas { background: transparent; border: 1px solid #333; box-shadow: 0 0 20px #000; }
-        /* AbbAsist Guide Rail */
-        #AbbAsist_Rail { background: #39ff14; color: #000; font-size: 12px; font-weight: bold; text-align: center; padding: 5px; text-transform: uppercase; }
-        #Workbench { background: #111; border-top: 2px solid #333; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-        .engine-row { display: flex; align-items: center; gap: 10px; border: 1px solid #444; padding: 10px; border-radius: 12px; }
-        .wheel { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #39ff14; position: relative; overflow: hidden; }
-        input[type="color"] { position: absolute; top: -15px; left: -15px; width: 100px; height: 100px; border: none; cursor: pointer; }
-        input[type="range"] { flex-grow: 1; accent-color: #39ff14; }
+        body { background: #000; color: #39ff14; margin: 0; font-family: sans-serif; overflow: hidden; }
+        
+        /* Main Container */
+        #kinds-hub { display: flex; flex-direction: column; height: 100vh; max-width: 450px; margin: auto; border: 2px solid #333; }
+
+        /* Stage Area (The Switcher) */
+        #stage { flex-grow: 1; position: relative; overflow: hidden; background: #111; }
+
+        /* Layers */
+        .layer { position: absolute; width: 100%; height: 100%; transition: transform 0.5s ease; display: none; }
+        .active-layer { display: block; }
+
+        /* Media Desk / Road Flare Styles [cite: 2026-02-07] */
+        #video-screen { width: 90%; height: 200px; background: #000; margin: 20px auto; border: 2px solid #fff; position: relative; }
+        .green-flash { animation: flash-green 1s infinite alternate; box-shadow: 0 0 20px #2ecc71; }
+        @keyframes flash-green { from { background: #27ae60; } to { background: #2ecc71; } }
+
+        /* Canvas Styles */
+        #Main_Canvas { background: transparent; border: 1px solid #39ff14; display: block; margin: auto; touch-action: none; }
+
+        /* Drawer/Navigation */
+        #Bottom_Nav { height: 70px; display: flex; justify-content: space-around; align-items: center; background: #222; border-top: 2px solid #333; }
+        .nav-btn { font-size: 24px; cursor: pointer; filter: grayscale(1); transition: 0.3s; }
+        .nav-btn.active { filter: grayscale(0); transform: scale(1.2); }
     </style>
 </head>
 <body>
 
-    <div id="Top_Bar">
-        <button class="btn" onclick="peelSticker()">[L] VAULT</button>
-        <div style="text-align:center; font-size:10px;">SE CUSTOMS<br>K.I.N.D.S.</div>
-        <button class="btn" onclick="autoSort()">[M] LOGIC</button>
+<div id="kinds-hub">
+    <div style="padding: 10px; display: flex; justify-content: space-between; font-size: 12px; background: #111;">
+        <span>KInDS™ CREATION-STATION</span>
+        <span id="abb-rail">Abb: Watching...</span>
     </div>
 
-    <div id="Workspace">
-        <canvas id="Main_Canvas"></canvas>
-    </div>
-
-    <div id="AbbAsist_Rail">AbbAsist™: Parameter Set - Lead Weight Locked</div>
-
-    <div id="Workbench">
-        <div class="engine-row">
-            <div class="wheel"><input type="color" id="c1" value="#39ff14"></div>
-            <input type="range" id="density" min="1" max="100" value="80">
+    <div id="stage">
+        <div id="layer-media" class="layer active-layer" style="padding: 10px;">
+            <div id="video-screen">
+                <div id="abb-hand" style="display:none; position:absolute; font-size: 50px; z-index: 100;">👉</div>
+                <p id="abb-voice" style="text-align:center; margin-top: 80px;">Abb: "Ready to edit?"</p>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+                <input type="range" id="speed-knob" style="accent-color: #ff69b4;">
+                <button id="next-move" style="background: #27ae60; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold;">NEXT</button>
+            </div>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; color:#39ff14; font-size:10px;">
-            STATION: K-01 | MODE: STICKER GEN
-            <button class="btn" onclick="ctx.clearRect(0,0,cvs.width,cvs.height)">CLEAR</button>
+
+        <div id="layer-design" class="layer" style="background: #222; padding: 20px;">
+            <h3 style="text-align:center;">Prime Time Design</h3>
+            <div style="background: #444; height: 150px; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 80px; position: relative;">
+                <span id="car-body">🚗</span>
+                <span id="spoiler" style="display:none; position:absolute; top: 30px; right: 50px;">📐</span>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button onclick="snap('spoiler')" style="background:orange; padding: 10px; border:none; border-radius:5px;">+ Spoiler</button>
+                <button onclick="snap('paint')" style="background:blue; padding: 10px; border:none; border-radius:5px; color:white;">+ Paint</button>
+            </div>
+        </div>
+
+        <div id="layer-art" class="layer">
+            <div style="display: flex; justify-content: space-between; padding: 5px;">
+                <button onclick="peelSticker()">[L] VAULT</button>
+                <button onclick="autoSort()">[M] LOGIC</button>
+            </div>
+            <canvas id="Main_Canvas"></canvas>
+            <div style="padding: 10px; display: flex; align-items: center; gap: 10px;">
+                <input type="color" id="c1" value="#39ff14">
+                <input type="range" id="density" style="flex-grow: 1;">
+                <button onclick="ctx.clearRect(0,0,cvs.width,cvs.height)">CLEAR</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        const cvs = document.getElementById('Main_Canvas');
-        const ctx = cvs.getContext('2d');
-        let drawing = false;
+    <div id="Bottom_Nav">
+        <div class="nav-btn active" onclick="showLayer('media', this)">📼</div>
+        <div class="nav-btn" onclick="showLayer('design', this)">🏎️</div>
+        <div class="nav-btn" onclick="showLayer('art', this)">🎨</div>
+    </div>
+</div>
 
-        cvs.width = window.innerWidth * 0.85;
-        cvs.height = window.innerHeight * 0.45;
+<script>
+    // --- GLOBAL SETUP ---
+    const cvs = document.getElementById('Main_Canvas');
+    const ctx = cvs.getContext('2d');
+    cvs.width = window.innerWidth * 0.9;
+    cvs.height = window.innerHeight * 0.4;
+    let drawing = false;
 
-        // L-VAULT: Auto-Background Remover (The "Peel")
-        function peelSticker() {
-            const link = document.createElement('a');
-            link.download = 'SE_STICKER_VAULT.png';
-            link.href = cvs.toDataURL("image/png"); // Captures only drawing, not background
-            link.click();
-            document.getElementById('AbbAsist_Rail').innerText = "AbbAsist™: Project PEELED to Vault";
+    // --- NAVIGATION LOGIC ---
+    function showLayer(layerId, btn) {
+        document.querySelectorAll('.layer').forEach(l => l.classList.remove('active-layer'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('layer-' + layerId).classList.add('active-layer');
+        btn.classList.add('active');
+        resetAbbTimer();
+    }
+
+    // --- ABBASIST ROAD FLARE [cite: 2026-02-07] ---
+    let timer;
+    const nextBtn = document.getElementById('next-move');
+    const hand = document.getElementById('abb-hand');
+
+    function resetAbbTimer() {
+        clearTimeout(timer);
+        nextBtn.classList.remove('green-flash');
+        hand.style.display = 'none';
+        timer = setTimeout(() => {
+            nextBtn.classList.add('green-flash');
+            hand.style.display = 'block';
+            hand.style.top = (nextBtn.offsetTop - 50) + "px";
+        }, 10000);
+    }
+
+    // --- ENGINE LOGIC (Sticker/Morph) ---
+    function snap(type) {
+        if(type === 'spoiler') {
+            const s = document.getElementById('spoiler');
+            s.style.display = s.style.display === 'none' ? 'block' : 'none';
+        } else {
+            const c = document.getElementById('car-body');
+            c.innerText = c.innerText === '🚗' ? '🚙' : '🚗';
         }
+    }
 
-        // M-LOGIC: Auto-Sorting Proof of Concept
-        function autoSort() {
-            const time = new Date().toLocaleTimeString();
-            alert(`M-Sorting Logic: Image cataloged by [Visual Geometry] at ${time}`);
-            document.getElementById('AbbAsist_Rail').innerText = "AbbAsist™: M-File Classified";
-        }
+    // --- DRAWING ENGINE ---
+    cvs.addEventListener('pointerdown', (e) => { drawing = true; ctx.beginPath(); });
+    cvs.addEventListener('pointermove', (e) => {
+        if (!drawing) return;
+        ctx.lineWidth = 15;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = document.getElementById('c1').value;
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+    });
+    window.addEventListener('pointerup', () => drawing = false);
 
-        function getPos(e) {
-            const rect = cvs.getBoundingClientRect();
-            const cx = e.touches ? e.touches[0].clientX : e.clientX;
-            const cy = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: cx - rect.left, y: cy - rect.top };
-        }
+    // --- UTILITIES ---
+    function peelSticker() { alert("Image Captured to Vault!"); }
+    function autoSort() { alert("M-Logic: Image Cataloged!"); }
 
-        function draw(e) {
-            if (!drawing) return;
-            const p = getPos(e);
-            ctx.lineWidth = 15;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = document.getElementById('c1').value;
-            ctx.globalAlpha = document.getElementById('density').value / 100;
-            ctx.lineTo(p.x, p.y);
-            ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(p.x, p.y);
-        }
+    document.addEventListener('pointerdown', resetAbbTimer);
+    resetAbbTimer();
+</script>
 
-        cvs.addEventListener('mousedown', (e) => { drawing = true; ctx.beginPath(); draw(e); });
-        cvs.addEventListener('mousemove', draw);
-        window.addEventListener('mouseup', () => drawing = false);
-        cvs.addEventListener('touchstart', (e) => { e.preventDefault(); drawing = true; ctx.beginPath(); draw(e); });
-        cvs.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
-        cvs.addEventListener('touchend', () => drawing = false);
-    </script>
 </body>
 </html>
