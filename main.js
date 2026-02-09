@@ -52,9 +52,15 @@ const PlanterLogic = {
         if (currentVisual === 'bloom') {
             AbbAssist.acknowledgePersonalTouch('plant'); 
         }
+            // Handles the "Soon" placeholder from your drawing
+    renderEmptySlot: function(side) {
+        return {
+            background: "curtain_red", // or blue
+            barrier: "gold_rope",
+            label: "COMING SOON",
+            status: "locked"
+        };
     }
-};
         
-    
-    SE_Customs_App.init();
+      SE_Customs_App.init();
 
