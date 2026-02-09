@@ -61,6 +61,29 @@ const CreationStation = {
             // Adjusts tools based on Task Selector (B1 Young v1/v2/v3)
             const drawerAccess = ageGroup === "B1_Young" ? 2 : 6;
             return `Opening ${drawerAccess} drawers for Version ${version}`;
+            // CURIOS CABINET - PERSONAL TOUCH LIBRARY
+const cabinetItems = {
+    planters: {
+        types: ['orange_clay', 'terricotta', 'black_plastic', 'wooden_barrel'],
+        stages: ['stem', 'bush', 'blooms'],
+        bloomPatterns: [
+            ['blue', 'red', 'purple', 'none'],
+            ['blue', 'purple', 'none', 'red'],
+            ['purple', 'none', 'blue', 'red']
+        ]
+    },
+    aquarium: {
+        fish: ['goldfish', 'clown_fish', 'angel_fish'],
+        tanks: ['round', 'square']
+    },
+    sports: ['baseball_mit', 'mini_helmet', 'foam_finger', 'shoe_on_stand'],
+    trophies: ['cup', 'car', 'record', 'mic'], // Records/CDs are much cooler than trophies
+    curtains: { 
+        colors: ['red', 'blue'], 
+        status: 'roped_off', 
+        sign: 'SOON' 
+    
+            
         }
     }
 };
