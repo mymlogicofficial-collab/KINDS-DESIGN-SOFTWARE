@@ -103,6 +103,25 @@ function startEnvironmentTimer() {
         stage = (stage + 1) % 4; // Cycles 0, 1, 2, 3 (Stem to Bloom)
         updatePlanterVisuals(stage);
     }, 900000); // 15 minutes in milliseconds
+    // main.js - The Workspace Manager
+import AbbAssist from './abb_logic.js';
+import CreationStation from './creation_station.js';
+
+const CreativeKInDS = {
+    // 1. CURIOSITY TRIGGER (Drawer F/G)
+    // Listens for long-hold or repeated taps on the curio shelf
+    onCurioAreaInteract: function(areaID) {
+        console.log("Morphing toolbox to Decoration Drawers...");
+        const drawerToOpen = (areaID === 'living_space') ? 'G' : 'F';
+        CreationStation.storage.loadWorkspace('Pro', drawerToOpen); 
+    },
+
+    // 2. THE ABB "EXIT" PULSE
+    // If they get stuck in a drawer, Abb points to the bench
+    handleStuckUser: function() {
+        AbbAssist.showGuidance('bench_area'); // Show the hovering hand
+        // Trigger the green pulse at Abb's fingertip
+        ui.pulse('green', 'bench_area'); 
         
         
         };
